@@ -21,11 +21,34 @@ body {
 .sortable {
   border: 2px dashed #ccc; /* Dashed border to indicate droppable area */
   padding: 10px;
-  min-height: 100px; /* Minimum height for the droppable area */
   background-color: #f9f9f9; /* Light background color */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
+  height: 100%;
 }
 
 .sortable.hover {
   background-color: #e0f7fa; /* Change background color on hover */
+}
+button{
+  background-color: greenyellow;
+  color: white;
+  padding: 10px;
+}
+.switch {
+  display: inline-block;
+}
+
+.switch-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.switch-button.active {
+  background-color: #4caf50; /* Green background for active state */
+  color: white; /* White text for active state */
 }

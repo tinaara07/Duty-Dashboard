@@ -25,13 +25,19 @@ function createTaskCard(task) {
   const title = $("<p></p>").text(task.taskTitle);
   const dueDate = $("<div></div>").text(task.taskDueDate);
   const description = $("<div></div>").text(task.taskDescription);
+  const deleteButton = $("<button></button>")
+  .text("Delete")
+  .data("task-id", task.taskId) // Store task ID in the button
+  .click(handleDeleteTask); // Attach the click event handler
+
 
   // Append elements to the card
   card.append(title);
   card.append(dueDate);
   card.append(description);
+  card.append(deleteButton); 
   return card;
-}
+  }
 
 // Function to render the task list and make cards draggable
 function renderTaskList() {
@@ -108,4 +114,33 @@ $(document).ready(function () {
       $(this).removeClass("hover"); // Remove hover class when dragging out
     }
   }); 
-}); 
+});
+// const tasks = [
+//   { id: 1, title: 'Task 1', dueDate: '2023-10-15', status: 'In Progress' },
+//   { id: 2, title: 'Task 2', dueDate: '2023-10-10', status: 'Not Yet Started' },
+//   { id: 3, title: 'Task 3', dueDate: '2023-12-15', status: 'In Progress' },
+//   { id: 4, title: 'Task 4', dueDate: '2023-09-10', status: 'Done' },
+// ];
+// function getTaskColor(dueDate) {
+//   const currentDate = new Date();
+//   const taskDueDate = new Date(dueDate);
+//   const timeDifference = taskDueDate - currentDate;
+  
+//   // Check if the task is overdue
+//   if (timeDifference < 0) {
+//       return 'red'; // Overdue
+//   }
+//   // Check if the task is nearing the deadline (within 3 days)
+//   else if (timeDifference <= 3 * 24 * 60 * 60 * 1000) {
+//       return 'yellow'; // Nearing deadline
+//   }
+//   return 'green'; // On track 
+// }
+// tasks.forEach(task => {
+//   const taskColor = getTaskColor(task.dueDate);
+//   const taskElement = document.createElement('div');
+//   taskElement.style.backgroundColor = taskColor;
+//   taskElement.innerText = task.title;
+//   document.getElementById('task-board').appendChild(taskElement);
+// });
+
