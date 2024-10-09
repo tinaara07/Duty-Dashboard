@@ -1,5 +1,5 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+let taskList = JSON.parse(localStorage.getItem("taskList")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId")) || 0;
 
 // Function to generate a unique task ID
@@ -21,6 +21,8 @@ function createTaskCard(task) {
         $(this).removeClass("dragging");
       }
     });
+    console.log(card)
+    card.css("background-color",getTaskColor(task.taskDueDate))
 
   const title = $("<p></p>").text(task.taskTitle);
   const dueDate = $("<div></div>").text(task.taskDueDate);
@@ -29,7 +31,6 @@ function createTaskCard(task) {
   .text("Delete")
   .data("task-id", task.taskId) // Store task ID in the button
   .click(handleDeleteTask); // Attach the click event handler
-
 
   // Append elements to the card
   card.append(title);
@@ -42,10 +43,22 @@ function createTaskCard(task) {
 // Function to render the task list and make cards draggable
 function renderTaskList() {
   $("#todo-cards").empty();
+  $("#in-progress-cards").empty();
+  $('#done-cards').empty();
   taskList.forEach(task => {
-    if (task.status === "To Do") {
+    const taskCard = createTaskCard(task);
+    if (task.status === "todo-cards") {
       const taskCard = createTaskCard(task);
       $("#todo-cards").append(taskCard);
+    }
+    else if (task.status=== "in-progress-cards") {
+      const taskCard = createTaskCard(task);
+      $("#in-progress-cards").append(taskCard);
+
+    }
+    else if (task.status=== "done-cards") {
+      const taskCard = createTaskCard(task);
+      $("#done-cards").append(taskCard);
     }
   });
 }
@@ -62,7 +75,7 @@ function handleAddTask(event) {
     taskTitle,
     taskDueDate,
     taskDescription,
-    status: "To Do",
+    status: "todo-cards",
   };
 
   taskList.push(newTask); // Update the list with the new task
@@ -87,8 +100,9 @@ function handleDeleteTask(event) {
 // Function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
   const droppedTaskId = ui.draggable.data("task-id");
-  const newStatus = $(this).data("status"); // Get the new status from the droppable area
-
+  const newStatus = event.target.id; // Get the new status from the droppable area
+console.log(newStatus)
+console.log(droppedTaskId)
   // Update the task's status
   const task = taskList.find(task => task.taskId === droppedTaskId);
   if (task) {
@@ -112,35 +126,19 @@ $(document).ready(function () {
     },
     out: function(event, ui) {
       $(this).removeClass("hover"); // Remove hover class when dragging out
-    }
+    },
+    drop:handleDrop,
+    
   }); 
 });
-// const tasks = [
-//   { id: 1, title: 'Task 1', dueDate: '2023-10-15', status: 'In Progress' },
-//   { id: 2, title: 'Task 2', dueDate: '2023-10-10', status: 'Not Yet Started' },
-//   { id: 3, title: 'Task 3', dueDate: '2023-12-15', status: 'In Progress' },
-//   { id: 4, title: 'Task 4', dueDate: '2023-09-10', status: 'Done' },
-// ];
-// function getTaskColor(dueDate) {
-//   const currentDate = new Date();
-//   const taskDueDate = new Date(dueDate);
-//   const timeDifference = taskDueDate - currentDate;
-  
-//   // Check if the task is overdue
-//   if (timeDifference < 0) {
-//       return 'red'; // Overdue
-//   }
-//   // Check if the task is nearing the deadline (within 3 days)
-//   else if (timeDifference <= 3 * 24 * 60 * 60 * 1000) {
-//       return 'yellow'; // Nearing deadline
-//   }
-//   return 'green'; // On track 
-// }
-// tasks.forEach(task => {
-//   const taskColor = getTaskColor(task.dueDate);
-//   const taskElement = document.createElement('div');
-//   taskElement.style.backgroundColor = taskColor;
-//   taskElement.innerText = task.title;
-//   document.getElementById('task-board').appendChild(taskElement);
-// });
+function getTaskColor(deadline) {
+  const today = dayjs();
+  const dueDate = dayjs(deadline);
+  if (dueDate.isBefore(today)) {
+      return 'red'; // Overdue
+  } else if (dueDate.diff(today, 'day') <= 3) {
+      return 'yellow'; // Nearing deadline
+  }
+  return '#e7e7e7'; // Default color
+}
 
