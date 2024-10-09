@@ -26,7 +26,9 @@ Features
 
 	•	Local Storage: All task information is saved using local storage, meaning the app works offline and doesn’t require a server.
 
- ![Untitled Video October 8, 2024 9_41 PM (1)](https://github.com/user-attachments/assets/fb47a9b1-338b-4aeb-819d-1d25b11901dd)
+
+ 
+![Untitled Video October 8, 2024 9_41 PM (1)](https://github.com/user-attachments/assets/e73ddffc-8473-4d62-a645-8e5235e2178a)
 
 
  
